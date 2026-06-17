@@ -6,52 +6,14 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-
 app.secret_key = os.getenv("SECRET_KEY")
 conexao = mysql.connector.connect(
-<<<<<<< HEAD
+
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USER"),
     password=os.getenv("DB_PASSWORD"),
     database=os.getenv("DB_NAME")
-=======
-    host="localhost",
-    user="root",
-    password="********",
-    database="questoes_certas"
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 )
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-
-    if request.method == "POST":
-        email = request.form["email"]
-        senha = request.form["senha"]
-
-        cursor = conexao.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT *
-            FROM usuario
-            WHERE email = %s
-            AND senha = SHA2(%s,256)
-        """, (email, senha))
-
-        usuario = cursor.fetchone()
-
-        if usuario:
-            session["usuario"] = usuario["nome_completo"]
-            return redirect("/")
-
-    return render_template("login.html")
-
-@app.route("/logout")
-def logout():
-    session.clear()
-
-    return redirect("/login")
-
 @app.route("/")
 def index():
     cursor = conexao.cursor(dictionary=True)
@@ -75,13 +37,8 @@ def index():
         total_simulados=total_simulados,
         total_disciplinas=total_disciplinas
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 @app.route("/usuarios")
 def usuarios():
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("""
@@ -97,10 +54,6 @@ def usuarios():
         "usuarios.html",
         usuarios=usuarios
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 @app.route("/questoes")
 def questoes():
     cursor = conexao.cursor(dictionary=True)
@@ -121,10 +74,6 @@ def questoes():
         "questoes.html",
         questoes=questoes
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 @app.route("/questao/<int:id>")
 def questao(id):
     cursor = conexao.cursor(dictionary=True)
@@ -141,10 +90,6 @@ def questao(id):
         "resolver_questao.html",
         questao=questao
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 @app.route("/simulado")
 def simulados():
     cursor = conexao.cursor(dictionary=True)
@@ -162,10 +107,6 @@ def simulados():
         "simulado.html",
         simulados=simulados
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 @app.route("/estatisticas")
 def estatisticas():
     cursor = conexao.cursor(dictionary=True)
@@ -184,9 +125,5 @@ def estatisticas():
         "estatisticas.html",
         estatisticas=estatisticas
     )
-<<<<<<< HEAD
-=======
-
->>>>>>> 89ebd26a2eb2cce171b56f3c112df0a017e8f794
 if __name__ == "__main__":
     app.run(debug=True)
