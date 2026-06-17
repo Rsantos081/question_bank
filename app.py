@@ -1,15 +1,18 @@
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = "questoes_certas"
-
+app.secret_key = os.getenv("SECRET_KEY")
 conexao = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="54720022",
-    database="questoes_certas"
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
 )
 
 
@@ -18,7 +21,6 @@ conexao = mysql.connector.connect(
 def login():
 
     if request.method == "POST":
-
         email = request.form["email"]
         senha = request.form["senha"]
 
@@ -34,19 +36,13 @@ def login():
         usuario = cursor.fetchone()
 
         if usuario:
-
             session["usuario"] = usuario["nome_completo"]
-
             return redirect("/")
 
     return render_template("login.html")
 
-
-
-
 @app.route("/logout")
 def logout():
-
     session.clear()
 
     return redirect("/login")
@@ -56,7 +52,6 @@ def logout():
 
 @app.route("/")
 def index():
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("SELECT COUNT(*) total FROM usuario")
@@ -78,10 +73,6 @@ def index():
         total_simulados=total_simulados,
         total_disciplinas=total_disciplinas
     )
-
-
-
-
 @app.route("/usuarios")
 def usuarios():
 
@@ -96,18 +87,12 @@ def usuarios():
     """)
 
     usuarios = cursor.fetchall()
-
     return render_template(
         "usuarios.html",
         usuarios=usuarios
     )
-
-
-
-
 @app.route("/questoes")
 def questoes():
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("""
@@ -126,13 +111,8 @@ def questoes():
         "questoes.html",
         questoes=questoes
     )
-
-
-
-
 @app.route("/questao/<int:id>")
 def questao(id):
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("""
@@ -147,13 +127,8 @@ def questao(id):
         "resolver_questao.html",
         questao=questao
     )
-
-
-
-
 @app.route("/simulado")
 def simulados():
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("""
@@ -169,13 +144,8 @@ def simulados():
         "simulado.html",
         simulados=simulados
     )
-
-
-
-
 @app.route("/estatisticas")
 def estatisticas():
-
     cursor = conexao.cursor(dictionary=True)
 
     cursor.execute("""
@@ -192,7 +162,5 @@ def estatisticas():
         "estatisticas.html",
         estatisticas=estatisticas
     )
-
-
 if __name__ == "__main__":
     app.run(debug=True)
