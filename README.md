@@ -18,8 +18,6 @@ O projeto foi desenvolvido em **Python (Flask)** no back-end, **MySQL** como ban
 - [Instalação e Configuração](#-instalação-e-configuração)
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Executando o Projeto](#-executando-o-projeto)
-- [Rotas da Aplicação](#-rotas-da-aplicação)
-- [Possíveis Melhorias](#-possíveis-melhorias)
 
 ---
 
